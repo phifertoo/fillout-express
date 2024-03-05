@@ -1,8 +1,8 @@
-import { filterBasedOnCondition } from "./fillout";
+import { isFilterSatisfied } from "./fillout";
 import { IFilterClause } from "../types/demo";
 import { mockResponses } from "./mocks";
 
-describe("filterBasedOnCondition", () => {
+describe("isFilterSatisfied", () => {
   test("equals: for a given id, when filter === value should return true", () => {
     const filterClause: IFilterClause = {
       id: "4KC356y4M6W8jHPKx9QfEy",
@@ -11,7 +11,7 @@ describe("filterBasedOnCondition", () => {
     };
 
     const response = mockResponses[0];
-    expect(filterBasedOnCondition(filterClause, response)).toBe(true);
+    expect(isFilterSatisfied(filterClause, response)).toBe(true);
   });
 
   test("equals: for a given id, when filter !== value should return true", () => {
@@ -22,7 +22,7 @@ describe("filterBasedOnCondition", () => {
     };
 
     const response = mockResponses[0];
-    expect(filterBasedOnCondition(filterClause, response)).toBe(false);
+    expect(isFilterSatisfied(filterClause, response)).toBe(false);
   });
 
   test("does_not_equal: for a given id, when filter !== value should return true", () => {
@@ -33,7 +33,7 @@ describe("filterBasedOnCondition", () => {
     };
 
     const response = mockResponses[0];
-    expect(filterBasedOnCondition(filterClause, response)).toBe(true);
+    expect(isFilterSatisfied(filterClause, response)).toBe(true);
   });
 
   test("does_not_equal:for a given id, when filter === value should return false", () => {
@@ -44,7 +44,7 @@ describe("filterBasedOnCondition", () => {
     };
 
     const response = mockResponses[0];
-    expect(filterBasedOnCondition(filterClause, response)).toBe(false);
+    expect(isFilterSatisfied(filterClause, response)).toBe(false);
   });
 
   test("greater_than: for a given id, when value > filter should return true", () => {
@@ -55,7 +55,7 @@ describe("filterBasedOnCondition", () => {
     };
 
     const response = mockResponses[0];
-    expect(filterBasedOnCondition(filterClause, response)).toBe(true);
+    expect(isFilterSatisfied(filterClause, response)).toBe(true);
   });
   test("greater_than: for a given id, when value < filter should return true", () => {
     const filterClause: IFilterClause = {
@@ -65,6 +65,6 @@ describe("filterBasedOnCondition", () => {
     };
 
     const response = mockResponses[0];
-    expect(filterBasedOnCondition(filterClause, response)).toBe(false);
+    expect(isFilterSatisfied(filterClause, response)).toBe(false);
   });
 });

@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { getFillout } from "../helpers/fillout";
 import { IFilterClause } from "../types/demo";
 import { filterData } from "../helpers/fillout";
+import { validFilters } from "../helpers/utils";
 
 const router = express.Router();
 
@@ -31,6 +32,15 @@ router.get(
         error: "Invalid filters parameter. It must be a valid JSON string",
       });
     }
+
+    // check for valid filter type
+    parsedFilters.map((f) => {
+      if (!validFilters.includes(f.condition)) {
+        return res.status(400).json({
+          error: `Invalid filter type: ${f.condition}`,
+        });
+      }
+    });
 
     const filteredResponses = filterData(response, parsedFilters);
     responseObject.responses = filteredResponses;

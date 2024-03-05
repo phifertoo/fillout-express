@@ -49,7 +49,7 @@ export const filterData = (
     if (
       // for all filters, if you can find the question that satisfies the condition, we add it to the output
       filters.every((f) => {
-        return filterBasedOnCondition(f, r);
+        return isFilterSatisfied(f, r);
       })
     ) {
       outputResponses.push(r);
@@ -59,7 +59,7 @@ export const filterData = (
   return outputResponses;
 };
 
-export const filterBasedOnCondition = (
+export const isFilterSatisfied = (
   filter: IFilterClause,
   response: IData
 ): boolean => {
@@ -72,6 +72,10 @@ export const filterBasedOnCondition = (
     return answer?.value !== filter.value;
   }
   if (filter.condition === "greater_than") {
+    if (answer?.value === null) {
+      return false;
+    }
+
     if (typeof answer?.value === "number" && typeof filter.value === "number") {
       // Convert answer.value to a number if it's a string
       const answerValue =
@@ -83,7 +87,6 @@ export const filterBasedOnCondition = (
           ? parseFloat(filter.value)
           : filter.value;
 
-      // Now both operands are numbers, you can perform the comparison
       return answerValue > filterValue;
     }
     if (typeof answer?.value === "string" && typeof filter.value === "string") {
@@ -95,6 +98,10 @@ export const filterBasedOnCondition = (
   }
 
   if (filter.condition === "less_than") {
+    if (answer?.value === null) {
+      return false;
+    }
+
     if (typeof answer?.value === "number" && typeof filter.value === "number") {
       // Convert answer.value to a number if it's a string
       const answerValue =
@@ -106,7 +113,6 @@ export const filterBasedOnCondition = (
           ? parseFloat(filter.value)
           : filter.value;
 
-      // Now both operands are numbers, you can perform the comparison
       return answerValue < filterValue;
     }
     if (typeof answer?.value === "string" && typeof filter.value === "string") {
@@ -119,54 +125,3 @@ export const filterBasedOnCondition = (
 
   return false;
 };
-// const filterBasedOnCondition = (
-//   filter: IFilterClause,
-//   response: IData
-// ): boolean => {
-//   const answer = response.questions.find((q) => q.id === filter.id);
-
-//   if (filter.condition === "equals") {
-//     return !!response.questions.find(
-//       (q) => q.id === filter.id && q.value === filter.value
-//     );
-//   }
-//   if (filter.condition === "does_not_equal") {
-//     return !!response.questions.every((q) => {
-//       if (q.id === filter.id) {
-//         return q.value !== filter.value;
-//       }
-//       return true;
-//     });
-//   }
-
-//   // if (condition === "greater_than") {
-//   //   return value > filter;
-//   // }
-//   // if (condition === "less_than") {
-//   //   return value < filter;
-//   // }
-
-//   return false;
-// };
-// const filterBasedOnCondition = (
-//   condition: "equals" | "does_not_equal" | "greater_than" | "less_than",
-//   value: any,
-//   filter: number | string
-// ): boolean => {
-//   if (condition === "equals") {
-//     return value === filter;
-//   }
-//   if (condition === "does_not_equal") {
-//     return value !== filter;
-//   }
-//   if (condition === "greater_than") {
-//     return value > filter;
-//   }
-//   if (condition === "less_than") {
-//     return value < filter;
-//   }
-
-//   return false;
-// };
-
-// http://localhost:3000/cLZojxk94ous/filteredresponses?filters=[{"id":"dSRAe3hygqVwTpPK69p5td","condition":"greater_than","value":"2024-03-03"},{"id":"4KC356y4M6W8jHPKx9QfEy","condition":"equals","value":"Thank you!"}]
