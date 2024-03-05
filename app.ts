@@ -1,6 +1,6 @@
 import express from "express";
 const bodyParser = require("body-parser");
-import router from "./src/routes/routes";
+import router from "./public/src/routes/routes";
 
 const app = express();
 const port = 3000;
