@@ -50,4 +50,10 @@ router.get(
   }
 );
 
+router.get("/", async (req: Request, res: Response) => {
+  return res.json(
+    `Fillout Team: Thanks for checking out my project. I'd love to get to know you guys better! Let's talk soon! You can access the active endpoint at https://fillout-express.onrender.com/cLZojxk94ous/filteredresponses?filters=[insert_filters_here]`
+  );
+});
+
 export default router;
